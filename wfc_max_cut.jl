@@ -25,7 +25,7 @@ function collapse(graph)
     # calculate the cut value when v is placed into either set
     # use probability to determine whether you're going to use the correct or incorrect choice
     #test
-    c = 4
+    c = 4 + 3
 end  
 
 function propogate(graph) 
