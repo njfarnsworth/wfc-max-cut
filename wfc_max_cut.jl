@@ -2,7 +2,7 @@
 This is the skeleton (that is, the starter code) for Pioneer Summer 2024 Mini-project 1.
 """
 
-using Graphs, GraphRecipes, Plots   # for plotting graphs
+using Graphs, GraphRecipes, Plots, SimpleWeightedGraphs   # for plotting graphs
 using StatsBase                     # for sample
 using Combinatorics                 # for combinations
 using Colors                        # to access RGB colors
@@ -75,7 +75,7 @@ function get_filename()
 end
     
 
-"Determine the number of happy edges in the given graph (represented by its nodes)."
+"Determine the number of happy edges in the given graph (represented by its nodes). - for vertex coloring "
 function count_happy_edges(nodes)
     nodecolors = [n.color for n in nodes]
     num_happies = 0
@@ -95,11 +95,11 @@ function create_nodes_vector(graph, edges)
     for edge in edges
         x, y, weight = edge
         weights_map[(x, y)] = weight
-        weights_map[(y, x)] = weight  # Assuming undirected graph
+        weights_map[(y, x)] = weight  
     end
     
 
-    for key in 1:nv(graph)
+    for key in 1:nv(graph) # this loop is creating the nodes
         deg = length(all_neighbors(graph, key))
         neighbor_weights = Dict{Float64, Float64}()
         for neighbor in all_neighbors(graph, key)
@@ -127,7 +127,7 @@ function wfc_mc(graph, edges, temp, p, a)
     global unpartitioned_vertices
 
     nodes = create_nodes_vector(graph, edges)
-
+    println("IN WFC, NODES: ", nodes, "\n")
     unpartitioned_vertices = sort(nodes, by = x -> sum(values(x.edge_weights)), rev = true) # list of Nodes
 
     push!(sets[1], unpartitioned_vertices[1]) # puts the highest degree vertex into set 1
@@ -158,7 +158,6 @@ function observe()
     global unpartitioned_vertices
 
     vertex, entropy = dequeue_pair!(pq)
-
     if entropy == 0
         for v in unpartitioned_vertices
             push!(sets[1], v)
@@ -214,21 +213,21 @@ function collapse(vertex, nodes, temp, a)
 
 end
 
-function propagate(vertex, nodes)
+function propagate(vertex, nodes) # rewrite to partition neighbor nodes who have no unpartitioned neighbors
     global pq
     global sets
 
-    up_neighbors = [n for n in vertex.neighbors if nodes[n].partitioned == false]
+    up_neighbors = [n for n in vertex.neighbors if nodes[n].partitioned == false] #unpartitioned neighbors
     cont = false
 
     for n in up_neighbors
-        set = nodes[nodes[n].neighbors[1]].set
+        set = nodes[nodes[n].neighbors[1]].set 
         for nn in nodes[n].neighbors
-            if nodes[nn].partitioned == false
+            if nodes[nn].partitioned == false # if any of the node's neighbors are unaartitioned, stop 
                 cont = true
                 break
             end
-            if nodes[nn].set != set
+            if nodes[nn].set != set # if the neighbor is with the partitioned vertex, continue 
                 cont = true
                 break
             end
@@ -238,10 +237,10 @@ function propagate(vertex, nodes)
             continue
         end 
 
-        push!(sets[3 - set], nodes[n])
+        push!(sets[3 - set], nodes[n]) # put the node in the opposite set  (kind of seems like this always happens)
         nodes[n].set = 3 - set
         nodes[n].partitioned = true
-        filter!(x -> x != nodes[n], up_neighbors)
+        filter!(x -> x != nodes[n], up_neighbors) # is he just removing one vertex or all but one ?
         filter!(x -> x != nodes[n], unpartitioned_vertices)
     end
 
@@ -259,7 +258,8 @@ end
 ######################################################################
 
 function calculate_cuts(edges, sets)
-    map = Dict{Int, Int}()
+
+    map = Dict{Int, Int}() # this part just creates a map that determines which set each vertex belongs to
     for (index, set) in enumerate(sets)
         for v in set
             map[v.key] = index
@@ -298,23 +298,23 @@ function benchmark(graph, edges,  temp = 200, p = .95, a = 200)
     subsets, edges = wfc_mc(graph, edges, temp, p, a)
 end
 
-function generate_file(num_nodes::Int = 7, edge_multiplier::Real = 1, filename::String = "")
+function generate_file(num_nodes::Int = 7, edge_multiplier::Real = 1, filename::String = "g15.txt")
     if filename == ""
         filename = get_filename()
         make_random_graph(filename, num_nodes, edge_multiplier)
     end
     println("Using file: $filename")
-    edge_list = Edge.(read_data(filename))
+    edge_list = Edge.(read_data(filename)) # 
     return SimpleGraph(edge_list), read_data(filename) # returns graph, edges
 end
 
 
-graph, edges = generate_file()
-print(graph, edges)
+
 
 #main function
-function main(graph, edges, temp = 200, p = .95, a = 200, amt_trials = 10000)   
-    max_cut= 0
+function main(graph, edges, temp = 200, p = .95, a = 200, amt_trials = 10000) 
+    # temperature changes, a fixed, p is what "cools" temp 
+    max_cut = 0
     best_partition = []
     best_nodes = []
 
@@ -338,6 +338,10 @@ function main(graph, edges, temp = 200, p = .95, a = 200, amt_trials = 10000)
 
 end
 
+
+graph, edges = generate_file()
+println("Graph:", graph)
+println("Edges:", edges)
 
 main(graph, edges)
 #@benchmark benchmark(graph, edges) 
