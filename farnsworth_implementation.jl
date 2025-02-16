@@ -80,6 +80,7 @@ function calculate_cuts(edges, sets)
             map[v.key] = index
         end
     end
+    println(map)
     cut_edges = Set{Tuple{Int, Int, Float64}}()
     num_cuts = 0
     total_weight = 0
@@ -102,10 +103,11 @@ function propagate(v, nodes, sets, edges)
     propagatable_vertices = []
 
     for node in nodes
-        if node.key in v.neighbors && !node.partitioned
+        if node.key in v.neighbors && !node.partitioned # make these inter filters 
             push!(unpartitioned_neighbors, node)
         end
     end
+
     for node in unpartitioned_neighbors
         ct = 0
         for n in nodes
@@ -117,24 +119,26 @@ function propagate(v, nodes, sets, edges)
             push!(propagatable_vertices, node)
         end
     end
+
+    propagate_cuts(edges)
  ## breaks here, just trying to see which setting adding it to is better
-    println("CUTS: ", calculate_cuts(edges, sets)[3])
-    for vertex in propagatable_vertices
-        if calculate_cuts(edges, sets)[3] == calculate_cuts(edges, sets)[3]
-            println("yep")
-        end
-    end
+
+
 end
 
-
+function propagate_cuts(edges)
+    edge_dict = Dict{Tuple{Int,Int}, Float64}()
+    for edge in edges # want to do this forever eventually 
+        edge_dict[(edge[1], edge[2])] = edge[3]
+    end
+    print(edge_dict)
+end
 
 function wfc(graph, edges, temp, cooling, err_const)
     sets = [Set{Node}(), Set{Node}()] # two final partitioned sets
 
     unsorted_nodes = create_nodes_vector(graph, edges)
     nodes = sort(unsorted_nodes, by = x -> sum(values(x.edge_weights)), rev = true) # sorted nodes
-
-    print("\n\n\n", nodes[nodes[1].neighbors[1]])
     push!(sets[1], nodes[1]) # put the node with highest edge weights into the first set
     nodes[1].partitioned = true
     nodes[1].set = 1
