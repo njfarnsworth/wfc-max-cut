@@ -3,7 +3,9 @@ using StatsBase                     # for sample
 using Combinatorics                 # for combinations
 using Colors                        # to access RGB colors
 using DataStructures                # for using stack and queue
-using BenchmarkTools  
+using BenchmarkTools 
+using MaxCut 
+using Statistics
 
 mutable struct Node
     key::Int
@@ -14,62 +16,45 @@ mutable struct Node
     edge_weights::Dict{Int, Float64} 
 end
 
-
-function make_random_graph(filename::AbstractString, num_nodes::Int, edge_multiplier::Real)
-    filepath = joinpath(pwd(), "input_graphs", filename)
-    open(filepath, "w") do io
-        nodes = 1:num_nodes
-        combos = collect(Combinatorics.combinations(nodes, 2))
-        num_edges = trunc(Int, edge_multiplier * num_nodes)
-        selected_edges = sample(combos, num_edges; replace=false)
-        for (u, v) in selected_edges
-            r = rand(1:10)
-            println(io, "$u $v $r")
+function matrix_generator()
+    n = rand(3:10)
+    A = zeros(n,n)
+    for i in 1:size(A,1)
+        for j in i:size(A,1)
+            if i != j # diagonals must be 0
+                A[i,j] = rand(1:20)
+                A[j,i] = A[i,j] # for symmetry
+            end
         end
     end
+    return A
 end
 
-function read_data(filename)
-    edges = Tuple{Int, Int, Float64}[]
-    io = open(pwd() * "/input_graphs/" * filename, "r");
-    for line in eachline(io)
-        x, y, weight = [parse(Float64, ss) for ss in split(line)]
-        t = Tuple([x, y, weight ])
-        push!(edges, t)
+function matrix_to_edge(M)
+    edge_list = []
+    for i in 1:size(M,1)
+        for j in i:size(M,1)
+            if M[i, j] != 0
+                push!(edge_list,(i,j,M[i,j]))
+            end
+        end
     end
-    return edges
+    return(edge_list)
 end
 
-function get_filename()
-    i = 1
-    while isfile(joinpath(pwd(), "input_graphs", "g$(i).txt"))
-        i += 1
-    end
-    return "g$(i).txt"
-end
-
-function generate_file(num_nodes::Int = 7, edge_multiplier::Real = 1, filename::String = "nayda_graph.txt")
-    if filename == ""
-        filename = get_filename()
-        make_random_graph(filename, num_nodes, edge_multiplier)
-    end
-    println("Using file: $filename")
-
-    edges = read_data(filename)
+function generate_graph(M)
+    edges = matrix_to_edge(M) # I wonder if I could just make the dictionary right here
     edge_list = Edge.(edges)  
-
     edge_dict = Dict{Tuple{Int,Int}, Float64}()
     for edge in edges
         edge_dict[(edge[1], edge[2])] = edge[3]
     end
-    
     return SimpleGraph(edge_list), edge_dict # returns graph, edges
 end
 
 function create_nodes_vector(graph, edges)
-
     nodes = Vector{Node}()
-    
+
     for key in 1:nv(graph)  # for each vertex in the graph
         deg = length(all_neighbors(graph, key))
         neighbor_weights = Dict{Int, Float64}()
@@ -113,9 +98,6 @@ function propagate(v, nodes, sets, edges)
 
     for vertex in propagatable_vertices
         set, cut = propagate_cuts(vertex, nodes, edges)  # Use edge_dict instead of edges
-        println("set: ", set)
-        println("cut: ", cut)
-        println("vertex: ", vertex, "\n\n")
         vertex.set = set
         push!(sets[set], vertex)
     end
@@ -251,18 +233,58 @@ end
 
 
 function main()
-    trials = 1 # declaring variables
+    match = 0
 
-    graph, edges = generate_file() # graph generation process
-    nodes = create_nodes_vector(graph, edges)
+    wfc_times = []
+    gw_times = []
 
-    max_cut = 0
+    for i in 1:1000
+        A = matrix_generator()
+        graph, edges = generate_graph(A) # graph generation process
+        nodes = create_nodes_vector(graph, edges)
+        max_cut = 0
+        max_sets = []
+        
 
-    for _ in 1:trials  
-        cut, sets = wfc(graph, edges, 200, .95, 200, nodes)
-        println(cut)
-        println("\n\n\n\n", sets)
+        for _ in 1:1000
+            wfc_time = @elapsed begin
+                cut, sets = wfc(graph, edges, 100, .95, 100, nodes)
+            end
+            if cut >= max_cut
+                max_cut = cut
+                max_sets = sets
+            end
+            push!(wfc_times, wfc_time)
+        end
+
+        println("\n\n\nMax cut: ", max_cut)
+        println("Max sets: ") 
+        for set in max_sets
+            print("Set: ")
+            for node in set 
+                print(node.key, " ")
+            end
+            println("")
+        end
+
+        gw_time = @elapsed begin
+            GW_max_cut, max_partition = maxcut(A);
+        end
+
+        push!(gw_times, gw_time)
+
+
+        println("GW Max Cut: ", GW_max_cut)
+
+      
+        if max_cut == GW_max_cut
+            match += 1
+        end
     end
+
+    println("Cut matches: $match of 1000")
+    println("Average WFC Time: $(mean(wfc_times))")
+    println("Average GW Time: $(mean(gw_times))")
 end
 
 main()
