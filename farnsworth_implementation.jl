@@ -7,6 +7,40 @@ using BenchmarkTools
 using MaxCut 
 using Statistics
 
+function tsplib_to_adj_matrix(filename::String)
+    lines = readlines("instance_graphs/$filename")
+    i0 = findfirst(x -> occursin("NODE_COORD_SECTION", x), lines)
+    nodes = [parse.(Float64, tokens)[2:3] for l in lines[i0+1:end] 
+             for tokens in [split(l)] if length(tokens) >= 3 && strip(l) != "EOF"]
+    n = length(nodes)
+    return [i == j ? 0 :
+            floor(Int, sqrt((nodes[i][1]-nodes[j][1])^2 + (nodes[i][2]-nodes[j][2])^2) + 0.5)
+            for i in 1:n, j in 1:n]
+end
+
+
+
+
+function tsp_adjacency_matrix(file_name, n)
+    data = read("instance_graphs/$file_name", String)
+    weights = parse.(Int, split(data))
+
+    matrix = zeros(Int, n, n)
+    index = 1
+    for i in 1:n
+        for j in 1:i  
+            matrix[i, j] = weights[index]
+            matrix[j, i] = weights[index] 
+            index += 1
+        end
+    end
+    return matrix
+end
+
+
+
+
+
 mutable struct Node
     key::Int
     degree::Int
@@ -16,8 +50,22 @@ mutable struct Node
     edge_weights::Dict{Int, Float64} 
 end
 
-function matrix_generator()
-    n = rand(3:10)
+function file_to_matrix(filename)
+    lines = readlines("instance_graphs/$filename")
+    n = parse(Int, split(lines[1])[1])
+    A = zeros(Int, n, n)
+        for line in lines[2:end]
+            isempty(line) && continue
+            u, v, w = parse.(Int, split(line))
+            A[u, v] = w
+            A[v,u] = w
+        end
+    return A
+end
+
+
+function matrix_generator() # this generates complete graphs 
+    n = rand(20:30)
     A = zeros(n,n)
     for i in 1:size(A,1)
         for j in i:size(A,1)
@@ -72,7 +120,7 @@ function create_nodes_vector(graph, edges)
 
 end
 
-function propagate(v, nodes, sets, edges) 
+function propagate(v, nodes, sets, edges)
     unpartitioned_neighbors = []
     propagatable_vertices = Vector{Node}()
 
@@ -216,7 +264,7 @@ function wfc(graph, edges, temp, cooling, err_const, og_nodes)
     nodes[1].set = 1
 
     v = first(nodes) 
-    x = propagate(v, nodes, sets, edges)
+   #  x = propagate(v, nodes, sets, edges)
 
     while !isnothing(v)
         v = observe(nodes)
@@ -224,7 +272,7 @@ function wfc(graph, edges, temp, cooling, err_const, og_nodes)
             break  
         end
         collapse(v, nodes, sets, edges, temp, err_const)
-        propagate(v, nodes, sets, edges)
+        # propagate(v, nodes, sets, edges)
         temp *= cooling
     end
 
@@ -233,58 +281,56 @@ end
 
 
 function main()
-    match = 0
 
+    println("propogate off")
+
+    match = 0
+    better = 0
     wfc_times = []
     gw_times = []
+    max_sum = 0
+    max_cut = 0
 
-    for i in 1:1000
-        A = matrix_generator()
-        graph, edges = generate_graph(A) # graph generation process
-        nodes = create_nodes_vector(graph, edges)
-        max_cut = 0
-        max_sets = []
-        
+    A = tsplib_to_adj_matrix("krob100.txt")
+    graph, edges = generate_graph(A) # graph generation process
+    nodes = create_nodes_vector(graph, edges)
+    max_sets = []
 
-        for _ in 1:1000
-            wfc_time = @elapsed begin
-                cut, sets = wfc(graph, edges, 100, .95, 100, nodes)
-            end
-            if cut >= max_cut
-                max_cut = cut
-                max_sets = sets
-            end
-            push!(wfc_times, wfc_time)
-        end
-
-        println("\n\n\nMax cut: ", max_cut)
-        println("Max sets: ") 
-        for set in max_sets
-            print("Set: ")
-            for node in set 
-                print(node.key, " ")
-            end
-            println("")
-        end
-
-        gw_time = @elapsed begin
-            GW_max_cut, max_partition = maxcut(A);
-        end
-
-        push!(gw_times, gw_time)
-
-
-        println("GW Max Cut: ", GW_max_cut)
-
-      
-        if max_cut == GW_max_cut
-            match += 1
-        end
+    gw_time = @elapsed begin
+        GW_max_cut, max_partition = maxcut(A);
     end
 
+    push!(gw_times, gw_time)
+      
+    
+    for i in 1:1000
+        if i % 25 == 0
+            println("step $i")
+        end
+        wfc_time = @elapsed begin
+        cut, sets = wfc(graph, edges, 200, .95, 200, nodes)
+        end
+        max_sum += cut
+        if cut >= max_cut
+            max_cut = cut
+            max_sets = sets
+        end
+        push!(wfc_times, wfc_time)
+
+        if cut == GW_max_cut
+            match += 1
+        elseif cut > GW_max_cut
+            better += 1
+        end
+    end
+ 
     println("Cut matches: $match of 1000")
+    println("Outperformance: $better of 1000")
     println("Average WFC Time: $(mean(wfc_times))")
     println("Average GW Time: $(mean(gw_times))")
+    println("Average WFC Cut: $(max_sum/1000)")
+    println("GW Cut: $GW_max_cut")
+    println("Max WFC Cut: $max_cut")
 end
 
 main()
