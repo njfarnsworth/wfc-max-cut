@@ -1,12 +1,25 @@
 using Graphs
 
-mutable struct Node
+# Define Vertex struct
+mutable struct Vertex
     key::Int
     degree::Int
     neighbors::Vector{Int}
     entropy::Float64
     set::Int
     edge_weights::Dict{Int, Float64} 
+end
+
+function tsp_file_to_matrix(filename)
+    lines = readlines(filename)
+    n, _ = parse.(Int, split(lines[1]))
+    A = zeros(Int, n, n)
+    for line in lines[2:end]
+        isempty(strip(line)) && continue
+        u, v, w = parse.(Int, split(line))
+        A[u, v] = w; A[v, u] = w
+    end
+    A
 end
 
 # Convert an adjacency matrix to a list of edges (with weights)
@@ -136,10 +149,10 @@ function _labeling_complete(labeling::Dict{Int,Int}, G::Graph)
     return true
 end
 
-# --- WFC Procedure and CustomVertex Creation ---
+# --- WFC Procedure and Vertex Creation ---
 
 function create_vertices_vector(graph, edge_dict)
-    vertices_vec = Vector{Node}()
+    vertices_vec = Vector{Vertex}()
     for key in 1:nv(graph)
         deg = length(all_neighbors(graph, key))
         neighbor_weights = Dict{Int, Float64}()
@@ -147,13 +160,13 @@ function create_vertices_vector(graph, edge_dict)
             weight = get(edge_dict, (key, neighbor), get(edge_dict, (neighbor, key), 0.0))
             neighbor_weights[neighbor] = weight
         end
-        new_vertex = Node(key, deg, all_neighbors(graph, key), 0.0, 0, neighbor_weights)
+        new_vertex = Vertex(key, deg, all_neighbors(graph, key), 0.0, 0, neighbor_weights)
         push!(vertices_vec, new_vertex)
     end
     return vertices_vec
 end
 
-function get_vertex_by_key(vertices::Vector{Node}, key::Int)
+function get_vertex_by_key(vertices::Vector{Vertex}, key::Int)
     for v in vertices
         if v.key == key
             return v
@@ -164,7 +177,7 @@ end
 
 function propagate(v, vertices, sets, edge_dict)
     unpartitioned_neighbors = []
-    propagatable = Vector{Node}()
+    propagatable = Vector{Vertex}()
     for vertex in vertices
         if vertex.key in v.neighbors && vertex.set == 0
             push!(unpartitioned_neighbors, vertex)
@@ -237,7 +250,7 @@ function observe(vertices)
 end
 
 function wfc(graph, edge_dict, temp, cooling, err_const, _)
-    sets = [Set{Node}(), Set{Node}()]
+    sets = [Set{Vertex}(), Set{Vertex}()]
     unsorted = create_vertices_vector(graph, edge_dict)
     vertices = sort(unsorted, by = v -> sum(values(v.edge_weights)), rev = true)
     push!(sets[1], vertices[1])
@@ -275,6 +288,7 @@ end
 
 # --- Wrap the Process as a Function ---
 function run_max_cut(graph, full_edge_dict)
+
     # Detect communities.
     communities = label_propagation_communities(graph)
     
@@ -326,38 +340,37 @@ function file_to_matrix(filename)
     lines = readlines("instance_graphs/$filename")
     n = parse(Int, split(lines[1])[1])
     A = zeros(Int, n, n)
-    for line in lines[2:end]
-        isempty(line) && continue
-        u, v, w = parse.(Int, split(line))
-        A[u, v] = w
-        A[v, u] = w
-    end
+        for line in lines[2:end]
+            isempty(line) && continue
+            u, v, w = parse.(Int, split(line))
+            A[u, v] = w
+            A[v,u] = w
+        end
     return A
 end
 
+
 # --- Main Routine: Run 1000 Iterations and Choose the Best ---
 function main()
+
     file_name = "mannino_k48.txt"
     A = file_to_matrix(file_name)
     g, e = generate_graph(A)
     best_cut = -Inf
     best_partition = Dict{Int, Int}()
 
-    start_time = time()      # Get the current time in seconds
-
-        for i in 1:1000
-            cut, partition = run_max_cut(g, e)
-            if cut > best_cut
-                best_cut = cut
-                best_partition = partition
-            end
+    start_time = time()
+    for i in 1:1000
+        cut, partition = run_max_cut(g,e)
+        if cut > best_cut
+            best_cut = cut
+            best_partition = partition
         end
-        println("Max cut:", best_cut)
-
+    end
 
     elapsed = time() - start_time
-
-    println("total time: $elapsed")
+    println("Max cut:", best_cut)
+    println("Time: $elapsed")
 end
 
 main()
