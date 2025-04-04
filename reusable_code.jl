@@ -5,6 +5,7 @@ using Colors
 using DataStructures               
 using BenchmarkTools 
 using Statistics
+using Random
 
 # NODE STRUCT 
 
@@ -354,33 +355,67 @@ function _labeling_complete(labeling::Dict{Int,Int}, G::Graph)
     return true
 end
 
+function flip_community!(flipped_partition, community, sets)
+    sets_in_comm = Set{Int}()
+    for v in community
+        push!(sets_in_comm, sets[v])
+    end
+    sets_vec = collect(sets_in_comm)
+    mapping = Dict{Int, Int}()
+    mapping[sets_vec[1]] = sets_vec[2]
+    mapping[sets_vec[2]] = sets_vec[1]
+    for v in community
+        flipped_partition[v] = mapping[sets[v]]
+    end
+end
 
-function prufer_tree(n::Int)
-    prufer = [rand(1:n) for _ in 1:(n-2)]
-    degree = ones(Int, n) .* 2
-    edges = Vector{Tuple{Int,Int}}()
-    for v in prufer
-        for u in 1:n
-            if degree[u] == 1
-                push!(edges, (u, v))
-                degree[u] -= 1
-                degree[v] -= 1
-                break
+function selective_flips(communities, sets, edges, seq)
+    flipped_partition = deepcopy(sets)
+    for (i, community) in enumerate(communities)
+        if seq[i] == 1
+            flip_community!(flipped_partition, community, sets)
+        end
+    end
+    new_cut_weight = 0.0
+    for ((i, j), w) in edges
+        if flipped_partition[i] != flipped_partition[j]
+            new_cut_weight += w
+        end
+    end
+    return flipped_partition, new_cut_weight, seq
+end
+
+function random_seq_flip(seq, p)
+    for (i, val) in enumerate(seq)
+        if rand() > p
+            if val == 1
+                seq[i] = 0
+            else
+                seq[i] = 1
             end
         end
     end
-    remaining = [u for u in 1:n if degree[u] == 1]
-    push!(edges, (remaining[1], remaining[2]))
-    A = zeros(Int, n, n)
-    for (u, v) in edges
-        A[u, v] = 1
-        A[v, u] = 1  
-    end
-    return A
+    return seq
 end
 
 
-function increase_density(A, something)
+function random_flips(communities, sets, edges, p)
+    sequence = zeros(length(communities))
+    flipped_partition = deepcopy(sets)
+    for (i, community) in enumerate(communities)
+        x = rand()
+        if x >= p
+            flip_community!(flipped_partition, community, sets)
+            sequence[i] = 1
+        end
+    end
+    new_cut_weight = 0.0
+    for ((i, j), w) in edges
+        if flipped_partition[i] != flipped_partition[j]
+            new_cut_weight += w
+        end
+    end
+    return flipped_partition, new_cut_weight, sequence
 end
 
 

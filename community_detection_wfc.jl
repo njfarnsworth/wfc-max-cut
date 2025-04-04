@@ -1,16 +1,19 @@
 include("reusable_code.jl")
 
+
+
+
 function main()
 
     file_name = "network.dat"
     A = file_to_matrix(file_name)
-    g, e = generate_graph(A)
+    global  g, e = generate_graph(A)
     best_cut = -Inf
-    best_partition = Dict{Int, Int}()
-    
+    global best_partition = Dict{Int, Int}()
+
     start_time = time()
-    communities = label_propagation_communities(g)
-    println("This graph has $(length(communities)) communities.")
+    global communities = label_propagation_communities(g)
+   # println("This graph has $(length(communities)) communities.")
     global_cut_weight = 0.0
 
     for _ in 1:1000
@@ -50,12 +53,12 @@ function main()
         end
         if global_cut_weight > best_cut
             best_cut = global_cut_weight
+            best_partition = global_partition
         end
     end
 
-    elapsed = time() - start_time
-    println("Max cut: ", best_cut)
-    println("Time: $elapsed")
+    println("Max cut before flips: ", best_cut)
+
 end
 
 main()

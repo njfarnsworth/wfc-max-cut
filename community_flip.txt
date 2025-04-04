@@ -1,0 +1,599 @@
+Max cut: 19955.252976400036
+Cut after flipping 5 random communities: 19875.050681410034
+Difference: -80.20229499000197
+Time: 14.021043062210083 
+
+
+Max cut: 19834.802382130063
+Cut after flipping 5 random communities: 19650.437056330054
+Difference: -184.36532580000858
+Time: 13.449383974075317 
+
+
+Max cut: 19871.416205250043
+Cut after flipping 5 random communities: 19853.52904715004
+Difference: -17.887158100002125
+Time: 12.79251503944397 
+
+
+Max cut: 19900.732299170028
+Cut after flipping 5 random communities: 20004.931461570028
+Difference: 104.1991624000002
+Time: 12.726097106933594 
+
+
+Max cut: 20018.527380250038
+Cut after flipping 5 random communities: 20000.88157025002
+Difference: -17.645810000016354
+Time: 21.755368947982788 
+
+
+Max cut: 19781.62764285001
+Cut after flipping 5 random communities: 19790.52378145003
+Difference: 8.896138600019185
+Time: 12.912150144577026 
+
+
+Max cut: 19858.249066410008
+Cut after flipping 5 random communities: 19822.624113620004
+Difference: -35.62495279000359
+Time: 12.740480184555054 
+
+
+Max cut: 20066.217945710046
+Cut after flipping 5 random communities: 19983.574580510045
+Difference: -82.64336520000143
+Time: 13.137244939804077 
+
+
+Max cut: 19867.89797795008
+Cut after flipping 5 random communities: 19779.405458750058
+Difference: -88.4925192000228
+Time: 13.060563802719116 
+
+
+Max cut: 19825.74315341001
+Cut after flipping 5 random communities: 19771.300849300012
+Difference: -54.44230410999808
+Time: 12.89373517036438 
+
+
+Max cut: 19780.245334709984
+Cut after flipping 5 random communities: 19757.204555409993
+Difference: -23.04077929999039
+Time: 12.829093933105469 
+
+
+Max cut: 19904.05681354003
+Cut after flipping 5 random communities: 20023.084343850034
+Difference: 119.02753031000248
+Time: 12.901675939559937 
+
+
+Max cut: 19761.24196196004
+Cut after flipping 5 random communities: 19823.29066057005
+Difference: 62.048698610007705
+Time: 12.793968200683594 
+
+
+Max cut: 19926.245308000038
+Cut after flipping 5 random communities: 19982.61870571003
+Difference: 56.37339770999097
+Time: 13.24285888671875 
+
+
+Max cut: 19873.874461910033
+Cut after flipping 5 random communities: 19944.872367920034
+Difference: 70.99790601000132
+Time: 12.713051080703735 
+
+
+Max cut: 19803.64880572002
+Cut after flipping 5 random communities: 19650.54569962001
+Difference: -153.10310610001034
+Time: 13.275007009506226 
+
+
+Max cut: 19932.96378487999
+Cut after flipping 5 random communities: 20006.871076069994
+Difference: 73.90729119000389
+Time: 13.782775163650513 
+
+
+Max cut: 19752.50104634001
+Cut after flipping 5 random communities: 19797.538848240016
+Difference: 45.037801900005434
+Time: 19.32967710494995 
+
+
+Max cut: 19974.47259984007
+Cut after flipping 5 random communities: 19987.751111540067
+Difference: 13.278511699994851
+Time: 13.366865873336792 
+
+
+Max cut: 20144.568761600025
+Cut after flipping 5 random communities: 20183.478053900013
+Difference: 38.90929229998801
+Time: 12.859025955200195 
+
+
+Max cut: 19782.243859940038
+Cut after flipping 5 random communities: 19804.713421040055
+Difference: 22.469561100017017
+Time: 17.41683602333069 
+
+
+Max cut: 19797.448437280043
+Cut after flipping 5 random communities: 19747.57880858004
+Difference: -49.86962870000207
+Time: 13.083769083023071 
+
+
+Max cut: 19966.623541040026
+Cut after flipping 5 random communities: 19998.88543233
+Difference: 32.2618912899743
+Time: 13.853223085403442 
+
+
+Max cut: 19831.634623170004
+Cut after flipping 5 random communities: 19665.814543170014
+Difference: -165.8200799999904
+Time: 12.835145950317383 
+
+
+Max cut: 19818.411899520033
+Cut after flipping 5 random communities: 19904.44924902002
+Difference: 86.03734949998761
+Time: 15.897286891937256 
+
+
+Max cut: 19784.15356985001
+Cut after flipping 5 random communities: 19645.708513250014
+Difference: -138.44505659999413
+Time: 15.581362962722778 
+
+
+Max cut: 19884.24472374003
+Cut after flipping 5 random communities: 19872.094778950035
+Difference: -12.149944789995061
+Time: 12.558191061019897 
+
+
+Max cut: 19871.78178940006
+Cut after flipping 5 random communities: 19844.677029500046
+Difference: -27.10475990001214
+Time: 30.342457056045532 
+
+
+Max cut: 19835.275760920038
+Cut after flipping 5 random communities: 19875.82132071004
+Difference: 40.54555979000361
+Time: 16.88717794418335 
+
+
+Max cut: 19797.21732546001
+Cut after flipping 5 random communities: 19756.08297436001
+Difference: -41.13435109999773
+Time: 14.145437002182007 
+
+
+Max cut: 19789.45576543006
+Cut after flipping 5 random communities: 19741.566146430065
+Difference: -47.88961899999413
+Time: 14.71514892578125 
+
+
+Max cut: 19832.055543980023
+Cut after flipping 5 random communities: 19772.03966318004
+Difference: -60.01588079998328
+Time: 19.919010877609253 
+
+
+Max cut: 19846.483150870023
+Cut after flipping 5 random communities: 19778.590789060036
+Difference: -67.89236180998705
+Time: 18.503926038742065 
+
+
+Max cut: 19771.41921194001
+Cut after flipping 5 random communities: 19709.458576840017
+Difference: -61.96063509999294
+Time: 13.821463823318481 
+
+
+Max cut: 19860.05253021005
+Cut after flipping 5 random communities: 19774.585042010032
+Difference: -85.46748820001812
+Time: 22.034281969070435 
+
+
+Max cut: 19810.330784359998
+Cut after flipping 5 random communities: 19750.25259316001
+Difference: -60.07819119998749
+Time: 14.083806991577148 
+
+
+Max cut: 19776.025867020024
+Cut after flipping 5 random communities: 19787.12443842002
+Difference: 11.098571399998036
+Time: 13.096377849578857 
+
+
+Max cut: 19868.813153920033
+Cut after flipping 5 random communities: 19792.716425710034
+Difference: -76.09672820999913
+Time: 12.499173879623413 
+
+
+Max cut: 19885.25426959007
+Cut after flipping 5 random communities: 19757.078921790053
+Difference: -128.17534780001733
+Time: 15.915014028549194 
+
+
+Max cut: 19886.22108182001
+Cut after flipping 5 random communities: 19706.246236820025
+Difference: -179.9748449999861
+Time: 16.997427940368652 
+
+
+Max cut: 19829.197940770006
+Cut after flipping 5 random communities: 19829.514534770016
+Difference: 0.3165940000108094
+Time: 23.289289951324463 
+
+
+Max cut: 19756.37192466005
+Cut after flipping 5 random communities: 19704.19180127005
+Difference: -52.18012338999688
+Time: 26.223718881607056 
+
+
+Max cut: 19809.700750610034
+Cut after flipping 5 random communities: 19950.541009210036
+Difference: 140.8402586000011
+Time: 14.635512113571167 
+
+
+Max cut: 19874.892980030017
+Cut after flipping 5 random communities: 19840.40695313002
+Difference: -34.48602689999825
+Time: 13.53587818145752 
+
+
+Max cut: 20010.04922885002
+Cut after flipping 5 random communities: 19980.06243914001
+Difference: -29.98678971001209
+Time: 16.452023029327393 
+
+
+Max cut: 19858.810135030035
+Cut after flipping 5 random communities: 19806.420477230025
+Difference: -52.389657800009445
+Time: 13.83134412765503 
+
+
+Max cut: 19823.11362328006
+Cut after flipping 5 random communities: 19878.959090070057
+Difference: 55.84546678999686
+Time: 12.617940187454224 
+
+
+Max cut: 19919.333888990022
+Cut after flipping 5 random communities: 19832.661669590027
+Difference: -86.67221939999581
+Time: 12.480429887771606 
+
+
+Max cut: 19808.2136756
+Cut after flipping 5 random communities: 19777.89745060001
+Difference: -30.31622499999139
+Time: 16.679418087005615 
+
+
+Max cut: 19744.152328080065
+Cut after flipping 5 random communities: 19647.542746570067
+Difference: -96.60958150999795
+Time: 14.798441886901855 
+
+
+Max cut: 19847.250779420097
+Cut after flipping 5 random communities: 19800.207767320073
+Difference: -47.0430121000245
+Time: 13.829891920089722 
+
+
+Max cut: 19824.67354955001
+Cut after flipping 5 random communities: 19910.973149050027
+Difference: 86.29959950001648
+Time: 27.435730934143066 
+
+
+Max cut: 19871.08822515002
+Cut after flipping 5 random communities: 19675.94762325002
+Difference: -195.14060189999873
+Time: 14.352406024932861 
+
+
+Max cut: 19822.42547042003
+Cut after flipping 5 random communities: 19767.816604220036
+Difference: -54.60886619999292
+Time: 16.027514934539795 
+
+
+Max cut: 19820.192356820065
+Cut after flipping 5 random communities: 19816.463821020046
+Difference: -3.728535800019017
+Time: 24.937867879867554 
+
+
+Max cut: 19879.51215753003
+Cut after flipping 5 random communities: 19899.78071174002
+Difference: 20.268554209989816
+Time: 13.550010919570923 
+
+
+Max cut: 19889.465268209988
+Cut after flipping 5 random communities: 19759.162527210006
+Difference: -130.30274099998132
+Time: 14.034053087234497 
+
+
+Max cut: 19819.966431440032
+Cut after flipping 5 random communities: 19921.629394150023
+Difference: 101.6629627099901
+Time: 15.276487112045288 
+
+
+Max cut: 19860.019032400036
+Cut after flipping 5 random communities: 19804.37454470004
+Difference: -55.64448769999581
+Time: 21.167134046554565 
+
+
+Max cut: 19839.11973558005
+Cut after flipping 5 random communities: 19877.630206280064
+Difference: 38.510470700013684
+Time: 15.447545051574707 
+
+
+Max cut: 19832.796643120048
+Cut after flipping 5 random communities: 19771.969755220056
+Difference: -60.82688789999156
+Time: 12.505882978439331 
+
+
+Max cut: 19920.00428860002
+Cut after flipping 5 random communities: 19833.907890800023
+Difference: -86.09639779999634
+Time: 12.669111967086792 
+
+
+Max cut: 19864.199503370033
+Cut after flipping 5 random communities: 19901.97380127003
+Difference: 37.77429789999587
+Time: 12.852205991744995 
+
+
+Max cut: 19864.859467650043
+Cut after flipping 5 random communities: 19733.14332454003
+Difference: -131.71614311001395
+Time: 12.780131101608276 
+
+
+Max cut: 19822.54506630007
+Cut after flipping 5 random communities: 19799.559197100087
+Difference: -22.985869199983426
+Time: 14.215909957885742 
+
+
+Max cut: 19835.923700129984
+Cut after flipping 5 random communities: 19723.458708529983
+Difference: -112.46499160000167
+Time: 14.111072063446045 
+
+
+Max cut: 19837.940751700015
+Cut after flipping 5 random communities: 19719.046228900013
+Difference: -118.89452280000114
+Time: 12.477543115615845 
+
+
+Max cut: 19926.951923470024
+Cut after flipping 5 random communities: 20026.031290460014
+Difference: 99.07936698999038
+Time: 13.031214952468872 
+
+
+Max cut: 19943.89620186999
+Cut after flipping 5 random communities: 19817.74842097998
+Difference: -126.14778089000902
+Time: 14.132730960845947 
+
+
+Max cut: 19793.389275100093
+Cut after flipping 5 random communities: 19647.895756500086
+Difference: -145.49351860000752
+Time: 12.407712936401367 
+
+
+Max cut: 19894.777383290053
+Cut after flipping 5 random communities: 19845.21834060006
+Difference: -49.559042689994385
+Time: 12.528823852539062 
+
+
+Max cut: 19817.361078240025
+Cut after flipping 5 random communities: 19735.80415745004
+Difference: -81.55692078998618
+Time: 14.562507152557373 
+
+
+Max cut: 19837.215685260027
+Cut after flipping 5 random communities: 19820.29596246003
+Difference: -16.919722799997544
+Time: 12.530670881271362 
+
+
+Max cut: 19919.465601860004
+Cut after flipping 5 random communities: 19849.57680376
+Difference: -69.88879810000435
+Time: 12.477751016616821 
+
+
+Max cut: 19874.783530040033
+Cut after flipping 5 random communities: 19855.629586140036
+Difference: -19.153943899997103
+Time: 12.541824102401733 
+
+
+Max cut: 19750.62026219005
+Cut after flipping 5 random communities: 19698.35540530006
+Difference: -52.26485688998946
+Time: 12.468623161315918 
+
+
+Max cut: 19810.642311140047
+Cut after flipping 5 random communities: 19702.89590525004
+Difference: -107.74640589000774
+Time: 12.465763092041016 
+
+
+Max cut: 19899.147346750036
+Cut after flipping 5 random communities: 19794.62491786003
+Difference: -104.52242889000627
+Time: 12.483098983764648 
+
+
+Max cut: 19944.56952474004
+Cut after flipping 5 random communities: 19888.97816374003
+Difference: -55.59136100000978
+Time: 13.398108005523682 
+
+
+Max cut: 19777.651617930016
+Cut after flipping 5 random communities: 19611.275261130028
+Difference: -166.37635679998857
+Time: 12.487452983856201 
+
+
+Max cut: 19782.828153210037
+Cut after flipping 5 random communities: 19748.21835011004
+Difference: -34.6098030999965
+Time: 12.461485862731934 
+
+
+Max cut: 19969.83306850006
+Cut after flipping 5 random communities: 19829.771859700028
+Difference: -140.06120880003073
+Time: 14.109729051589966 
+
+
+Max cut: 19870.67855079001
+Cut after flipping 5 random communities: 19788.723085080015
+Difference: -81.95546570999431
+Time: 14.245250940322876 
+
+
+Max cut: 19825.966957970028
+Cut after flipping 5 random communities: 19659.706484260023
+Difference: -166.2604737100046
+Time: 12.532733917236328 
+
+
+Max cut: 19774.987972510025
+Cut after flipping 5 random communities: 19758.976016400018
+Difference: -16.011956110007304
+Time: 12.574963092803955 
+
+
+Max cut: 19924.498648870052
+Cut after flipping 5 random communities: 19874.25201538005
+Difference: -50.24663349000184
+Time: 13.736272811889648 
+
+
+Max cut: 19839.053693100046
+Cut after flipping 5 random communities: 19990.560987010027
+Difference: 151.50729390998094
+Time: 12.528596878051758 
+
+
+Max cut: 19800.381564950087
+Cut after flipping 5 random communities: 19679.184088540085
+Difference: -121.1974764100014
+Time: 12.422909021377563 
+
+
+Max cut: 19921.66353292003
+Cut after flipping 5 random communities: 19979.701831730014
+Difference: 58.03829880998455
+Time: 14.34543514251709 
+
+
+Max cut: 19846.296620140038
+Cut after flipping 5 random communities: 19746.72002614006
+Difference: -99.57659399997647
+Time: 12.895155906677246 
+
+
+Max cut: 19835.243175040017
+Cut after flipping 5 random communities: 19817.783449740018
+Difference: -17.459725299999263
+Time: 12.536386013031006 
+
+
+Max cut: 19865.197289270007
+Cut after flipping 5 random communities: 19755.02433466
+Difference: -110.17295461000685
+Time: 14.122493982315063 
+
+
+Max cut: 19845.491293930067
+Cut after flipping 5 random communities: 20005.527810540065
+Difference: 160.03651660999822
+Time: 12.540323972702026 
+
+
+Max cut: 19840.961245500064
+Cut after flipping 5 random communities: 19770.482833600072
+Difference: -70.47841189999235
+Time: 12.733234882354736 
+
+
+Max cut: 19859.109918920003
+Cut after flipping 5 random communities: 19848.167194319998
+Difference: -10.942724600005022
+Time: 13.663187980651855 
+
+
+Max cut: 19830.71608811005
+Cut after flipping 5 random communities: 19612.332313110044
+Difference: -218.3837750000057
+Time: 13.012241840362549 
+
+
+Max cut: 19885.218606220038
+Cut after flipping 5 random communities: 19880.48740332005
+Difference: -4.731202899987693
+Time: 12.78057599067688 
+
+
+Max cut: 19829.538130830035
+Cut after flipping 5 random communities: 19764.146876020022
+Difference: -65.39125481001247
+Time: 14.469820022583008 
+
+
+Max cut: 19850.378543779996
+Cut after flipping 5 random communities: 19874.446984490005
+Difference: 24.068440710008872
+Time: 12.998126029968262 
+
+
+Max cut: 19913.307640830048
+Cut after flipping 5 random communities: 19922.639418530045
+Difference: 9.331777699997474
+Time: 12.744305849075317 
+
