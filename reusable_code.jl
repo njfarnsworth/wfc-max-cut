@@ -233,27 +233,36 @@ end
 
 
 function wfc(graph, edges, temp, cooling, err_const)
-    sets = [Set{Node}(), Set{Node}()] # two final partitioned sets
+    final_sets = [Set{Node}(), Set{Node}()]
+    final_cut = 0
+   
+    for i = 1:100
+        sets = [Set{Node}(), Set{Node}()] # two final partitioned sets
+        unsorted_nodes = create_nodes_vector(graph, edges)
+        nodes = sort(unsorted_nodes, by = x -> sum(values(x.edge_weights)), rev = true) # sorted nodes
+        push!(sets[1], nodes[1]) # put the node with highest edge weights into the first set
+        nodes[1].set = 1
 
-    unsorted_nodes = create_nodes_vector(graph, edges)
-    nodes = sort(unsorted_nodes, by = x -> sum(values(x.edge_weights)), rev = true) # sorted nodes
-    push!(sets[1], nodes[1]) # put the node with highest edge weights into the first set
-    nodes[1].set = 1
+        v = first(nodes) 
+        x = propagate(v, nodes, sets, edges)
 
-    v = first(nodes) 
-    x = propagate(v, nodes, sets, edges)
-
-    while !isnothing(v)
-        v = observe(nodes)
-        if isnothing(v)
-            break  
+        while !isnothing(v)
+            v = observe(nodes)
+            if isnothing(v)
+                break  
+            end
+            collapse(v, nodes, sets, edges, temp, err_const)
+            propagate(v, nodes, sets, edges)
+            temp *= cooling
         end
-        collapse(v, nodes, sets, edges, temp, err_const)
-        propagate(v, nodes, sets, edges)
-        temp *= cooling
+        cut = calculate_cuts(edges, sets)
+        if cut > final_cut
+            final_cut = cut
+            final_sets = sets
+        end
     end
 
-    return calculate_cuts(edges, sets), sets
+    return final_cut, final_sets
 end
 
 
