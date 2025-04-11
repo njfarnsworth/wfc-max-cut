@@ -1,0 +1,28 @@
+Graph Name: g200-15.dat
+# of Nodes: 200
+# of Edges: 794
+
+GW Cut: 1617.055916 
+GW Time: 5.416133291 seconds
+
+Running 1000 iterations of WFC with parameters (200, 0.95, 200)
+
+WFC Time: 4.117247834
+Max WFC Cut: 1497.7903049999998
+
+This graph has 14 communities.
+
+Running 1000 iterations of WFC + CD with parameters (200, 0.95, 200)
+
+WFC + CD Time: 2.636477791 seconds
+WFC + Community detection Max Cut: 1441.8549369999996
+
+ Genetic Algorithm Parameters:
+	 * 1000 parents in first generation
+	 * 25% chance of community flip for first parent generation
+	 * Use top 100 solutions to generate 1000 children, keep 100, repeat
+	 * 2% mutation rate for children
+	 * 100 generations total
+
+Additional time for genetic algorithm: 0.74282375
+Top solution after genetics algorithm: 1449.7563269999996

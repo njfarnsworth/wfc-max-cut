@@ -49,7 +49,7 @@ function tsp_adjacency_matrix(file_name, n) # turns different file type into adj
 end
  
 function file_to_matrix(filename) # turns third file type into adjacency matrix .... need to consolidate all of these at some point 
-    lines = readlines("/Users/naydafarnsworth/wfc-max-cut/LFRbenchmarks/weighted_undirected/$filename")
+    lines = readlines("/Users/naydafarnsworth/wfc-max-cut/community_detection_graphs/$filename")
     n = parse(Int, split(lines[1])[1])
     A = zeros(Float64, n, n)
         for line in lines[2:end]
@@ -193,7 +193,7 @@ function calculate_cuts(edge_dict, sets)
         end
     end
 
-    return num_cuts, collect(cut_edges), total_weight
+    return total_weight
 end
 
 function entropy_update(v, nodes, edges)
@@ -236,7 +236,7 @@ function wfc(graph, edges, temp, cooling, err_const)
     final_sets = [Set{Node}(), Set{Node}()]
     final_cut = 0
    
-    for i = 1:100
+    for i = 1:1
         sets = [Set{Node}(), Set{Node}()] # two final partitioned sets
         unsorted_nodes = create_nodes_vector(graph, edges)
         nodes = sort(unsorted_nodes, by = x -> sum(values(x.edge_weights)), rev = true) # sorted nodes

@@ -31,11 +31,22 @@ end
 
 function main()
 
-    sols = genetics(communities, best_partition, e, 0.25, 100)
-    println("top 10 solutions after 100 generations")
-    for (sets, cut, sequence) in sols
-        println(cut)
+    println("\n Genetic Algorithm Parameters:")
+    println("\t * 1000 parents in first generation")
+    println("\t * 25% chance of community flip for first parent generation")
+    println("\t * Use top 100 solutions to generate 1000 children, keep 100, repeat")
+    println("\t * 2% mutation rate for children")
+    println("\t * 100 generations total\n")
+
+    genetics_time = @elapsed begin 
+        sols = genetics(communities, best_partition, e, 0.25, 100)
     end
+
+    top_sol = sols[1][2]
+
+    println("Additional time for genetic algorithm: $genetics_time")
+    println("Top solution after genetics algorithm: $top_sol")
+
     
     # we have a solution - let 0 represent an original community and 1 represent a flipped community. Create a list of 0s representing the original communities
     

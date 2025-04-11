@@ -312,7 +312,7 @@ end
 
 
 #main function
-function main(graph, edges, temp = 200, p = .95, a = 200, amt_trials = 10000) 
+function main(graph, edges, temp = 200, p = .95, a = 200, amt_trials = 1000) 
     # temperature changes, a fixed, p is what "cools" temp 
     max_cut = 0
     best_partition = []

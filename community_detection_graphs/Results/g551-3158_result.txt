@@ -1,0 +1,29 @@
+Graph Name: g551-3158.dat
+# of Nodes: 551
+# of Edges: 3158
+
+
+GW Cut: 6438.18542 
+GW Time: 993.994410166 seconds
+
+Running 1000 iterations of WFC with parameters (200, 0.95, 200)
+
+WFC Time: 12.820813625
+Max WFC Cut: 5955.348244000005
+
+This graph has 35 communities.
+
+Running 1000 iterations of WFC + CD with parameters (200, 0.95, 200)
+
+WFC + CD Time: 7.447050334 seconds
+WFC + Community detection Max Cut: 5855.777164000002
+
+ Genetic Algorithm Parameters:
+	 * 1000 parents in first generation
+	 * 25% chance of community flip for first parent generation
+	 * Use top 100 solutions to generate 1000 children, keep 100, repeat
+	 * 2% mutation rate for children
+	 * 100 generations total
+
+Additional time for genetic algorithm: 2.010442416
+Top solution after genetics algorithm: 5871.945684000003
