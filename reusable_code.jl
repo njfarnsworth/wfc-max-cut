@@ -148,11 +148,10 @@ function propagate(v, nodes, sets, edges)
         vertex.set = set
         push!(sets[set], vertex)
     end
-
     entropy_update(v, nodes, edges)
 end
 
-function collapse(v, nodes, sets, edges, temp, a)
+function collapse(v, nodes, sets, edges, temp, a) 
     best_set, _ = propagate_cuts(v, nodes,edges)
     prob = rand()
 
@@ -207,15 +206,12 @@ end
 function propagate_cuts(v, nodes, edges)
     max_1 = 0
     max_2 = 0
-
     for key in v.neighbors
         neighbor = get_node_by_key(nodes, key)
         edge_weight = edges[(min(v.key, key), max(v.key, key))]
-
         if neighbor.set == 1
             max_2 = max_2 + edge_weight
         end
-
         if neighbor.set == 2
             max_1 = max_1 + edge_weight
         end
@@ -236,7 +232,6 @@ function wfc(graph, edges, temp, cooling, err_const)
     final_sets = [Set{Node}(), Set{Node}()]
     final_cut = 0
    
-    for i = 1:1
         sets = [Set{Node}(), Set{Node}()] # two final partitioned sets
         unsorted_nodes = create_nodes_vector(graph, edges)
         nodes = sort(unsorted_nodes, by = x -> sum(values(x.edge_weights)), rev = true) # sorted nodes
@@ -252,7 +247,7 @@ function wfc(graph, edges, temp, cooling, err_const)
                 break  
             end
             collapse(v, nodes, sets, edges, temp, err_const)
-            propagate(v, nodes, sets, edges)
+            # propagate(v, nodes, sets, edges)
             temp *= cooling
         end
         cut = calculate_cuts(edges, sets)
@@ -260,7 +255,6 @@ function wfc(graph, edges, temp, cooling, err_const)
             final_cut = cut
             final_sets = sets
         end
-    end
 
     return final_cut, final_sets
 end

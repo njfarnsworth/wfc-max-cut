@@ -5,7 +5,7 @@ include("reusable_code.jl")
 
 function main()
 
-    file_name = "network.dat"
+    file_name = "g2000-15402.dat"
     A = file_to_matrix(file_name)
     global  g, e = generate_graph(A)
     best_cut = -Inf
