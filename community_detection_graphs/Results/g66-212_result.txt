@@ -12,6 +12,8 @@ Max WFC Cut: 342.8901100000003
 
 This graph has 6 communities.
 
+There are 212 edges in the graphs and 3 edges connecting communities
+
 Running 1000 iterations of WFC + CD with parameters (200, 0.95, 200)
 
 WFC + CD Time: 1.462017834 seconds

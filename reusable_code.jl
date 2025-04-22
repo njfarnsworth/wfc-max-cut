@@ -247,8 +247,19 @@ end
 
 function observe(nodes)
     unpartitioned_nodes = filter(node -> node.set ==0, nodes) # can we just automatically remove vertices who do are partitioned
-    min_entropy_node = isempty(unpartitioned_nodes) ? nothing : argmin(node -> node.entropy, unpartitioned_nodes)
-    return(min_entropy_node)
+    max_entropy_node = isempty(unpartitioned_nodes) ? nothing : argmax(node -> node.entropy, unpartitioned_nodes)
+    return(max_entropy_node)
+end
+
+function edges_between_communities(g::SimpleGraph)
+    internal_edges = 0
+    communities = label_propagation_communities(g)
+    for community in communities
+        vertices = collect(community)
+        subgraph, _ = induced_subgraph(g, vertices)   # ← destructure here
+        internal_edges += ne(subgraph)             # ← now it’s a SimpleGraph
+    end
+    return ( ne(g), internal_edges )
 end
 
 function convert_sets_to_partition(sets::Vector{Set{Node}})
