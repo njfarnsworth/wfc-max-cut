@@ -7,6 +7,7 @@ using BenchmarkTools
 using Statistics
 using Random
 
+
 # NODE STRUCT 
 
 mutable struct Node
@@ -16,6 +17,23 @@ mutable struct Node
     entropy::Float64
     set::Int
     edge_weights::Dict{Int, Float64} 
+end
+
+function viewgraph(graph)  
+    p = graphplot(graph,
+        names = 1:nv(graph),
+        fontsize = 14,
+        nodelabeldist = 5, 
+        nodelabelangleoffset = π/4,
+        markershape = :circle,
+        markersize = 0.15,
+        markerstrokewidth = 2,
+        markerstrokecolor = :gray,
+        edgecolor = :gray,
+        linewidth = 2,
+        curves = true
+    )
+    display(p)
 end
 
 # FILE READERS 
@@ -64,6 +82,31 @@ function file_to_matrix(filename) # turns third file type into adjacency matrix 
     return A
 end
 
+function genetics(communities, best_partition, e, p, gen)
+    sols = []
+    for _ in 1:1000
+        sets, cut, sequence = random_flips(communities, best_partition, e, p)
+        push!(sols, (sets, cut, sequence))
+    end
+    sorted_entries = sort(sols, by = x -> x[2], rev = true)
+    current_top_solutions = sorted_entries[1:100]
+    for _ in 1:gen
+        children = []
+        for _ in 1:100
+            j = rand(1:length(communities)-1)
+            _, _, seq1 = rand(current_top_solutions)
+            _, _, seq2 = rand(current_top_solutions)
+            new_seq = vcat(seq1[1:j], seq2[j+1:end])
+            child_sequence = random_seq_flip(new_seq, 0.02)
+            child = selective_flips(communities, best_partition, e, child_sequence)
+            push!(children, child)
+        end
+        sorted_children = sort(children, by = x -> x[2], rev = true)
+        current_top_solutions = sorted_children[1:min(100, length(sorted_children))]
+    end
+
+    return current_top_solutions[1:10]
+end
 
 # GRAPH GENERATORS
 
@@ -122,46 +165,29 @@ function create_nodes_vector(graph, edges) # creates a vector of nodes
     return nodes
 end
 
-function propagate(v, nodes, sets, edges)
-    unpartitioned_neighbors = []
-    propagatable_vertices = Vector{Node}()
-    for node in nodes
-        if node.key in v.neighbors && node.set == 0
-            push!(unpartitioned_neighbors, node)
+function propagate(v, nodes, sets, edges) 
+    can_propagate = true 
+    for nv_key in v.neighbors
+        nv = get_node_by_key(nodes, nv_key)
+        if nv === nothing || nv.set == 0 # check if it has any neighbors that aren't in a set yet 
+            can_propagate = false
+            break
         end
     end
-    for node in unpartitioned_neighbors
-        can_propagate = true
-        for neighbor_key in node.neighbors
-            neighbor_node = get_node_by_key(nodes, neighbor_key)
-            if neighbor_node === nothing || neighbor_node.set == 0
-                can_propagate = false
-                break
-            end
-        end
-        if can_propagate
-            push!(propagatable_vertices, node)
-        end
-    end
-    for vertex in propagatable_vertices
-        set, cut = propagate_cuts(vertex, nodes, edges)  # Use edge_dict instead of edges
-        vertex.set = set
-        push!(sets[set], vertex)
-    end
-    entropy_update(v, nodes, edges)
+    return can_propagate
 end
 
 function collapse(v, nodes, sets, edges, temp, a) 
-    best_set, _ = propagate_cuts(v, nodes,edges)
+    best_set, _ = best_set_finder(v, nodes,edges)
     prob = rand()
-
-    if (prob < exp(-a/temp))
+    if (prob < exp(-a/temp) && !propagate(v,nodes,sets,edges))
         v.set = best_set == 1 ? 2 : 1
         push!(sets[v.set], v)
     else
         push!(sets[best_set], v)
         v.set = best_set
     end
+    entropy_update(v,nodes,edges)
 end
 
 function get_node_by_key(nodes::Vector{Node}, key::Int)
@@ -203,7 +229,7 @@ function entropy_update(v, nodes, edges)
     end
 end
 
-function propagate_cuts(v, nodes, edges)
+function best_set_finder(v, nodes, edges)
     max_1 = 0
     max_2 = 0
     for key in v.neighbors
@@ -220,43 +246,42 @@ function propagate_cuts(v, nodes, edges)
 end
 
 function observe(nodes)
-    unpartitioned_nodes = filter(node -> node.set ==0, nodes)
-    max_entropy_node = isempty(unpartitioned_nodes) ? nothing : argmax(node -> node.entropy, unpartitioned_nodes)
-    return(max_entropy_node)
+    unpartitioned_nodes = filter(node -> node.set ==0, nodes) # can we just automatically remove vertices who do are partitioned
+    min_entropy_node = isempty(unpartitioned_nodes) ? nothing : argmin(node -> node.entropy, unpartitioned_nodes)
+    return(min_entropy_node)
+end
 
+function convert_sets_to_partition(sets::Vector{Set{Node}})
+    partition = Dict{Int, Int}()
+    # iterate over each community set by index.
+    for i in 1:length(sets)
+        for v in sets[i]
+            # Map each node's key to the index (community number)
+            partition[v.key] = i
+        end
+    end
+    return partition
 end
 
 
-
-function wfc(graph, edges, temp, cooling, err_const)
-    final_sets = [Set{Node}(), Set{Node}()]
-    final_cut = 0
-   
-        sets = [Set{Node}(), Set{Node}()] # two final partitioned sets
-        unsorted_nodes = create_nodes_vector(graph, edges)
-        nodes = sort(unsorted_nodes, by = x -> sum(values(x.edge_weights)), rev = true) # sorted nodes
-        push!(sets[1], nodes[1]) # put the node with highest edge weights into the first set
-        nodes[1].set = 1
-
-        v = first(nodes) 
-        x = propagate(v, nodes, sets, edges)
-
-        while !isnothing(v)
-            v = observe(nodes)
-            if isnothing(v)
-                break  
-            end
-            collapse(v, nodes, sets, edges, temp, err_const)
-            # propagate(v, nodes, sets, edges)
-            temp *= cooling
+function wfc(nodes, edges, temp, cooling, err_const)
+    sets = [Set{Node}(), Set{Node}()] # two final partitioned sets
+    nodes = deepcopy(nodes)
+    nodes = sort(nodes, by = x -> sum(values(x.edge_weights)), rev = true) # sorted nodes
+    push!(sets[1], nodes[1]) # put the node with highest edge weights into the first set
+    nodes[1].set = 1
+    v = first(nodes)  
+    while !isnothing(v)
+        v = observe(nodes)
+        if isnothing(v)
+            break  
         end
-        cut = calculate_cuts(edges, sets)
-        if cut > final_cut
-            final_cut = cut
-            final_sets = sets
-        end
-
-    return final_cut, final_sets
+        collapse(v, nodes, sets, edges, temp, err_const)
+        temp *= cooling
+    end
+    final_cut = calculate_cuts(edges, sets)
+    partition = convert_sets_to_partition(sets)
+    return final_cut, partition
 end
 
 

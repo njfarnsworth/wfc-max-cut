@@ -48,7 +48,7 @@ function read_data(filename)
 end
 
 "Display the given graph."
-function viewgraph(graph, nodes)  
+function viewgraph(graph)  
     p = graphplot(graph,
         names = 1:nv(graph),
         fontsize = 14,
